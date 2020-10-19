@@ -1,0 +1,23 @@
+{
+  "name": "wwd/easy-api",
+  "description": "一个简单的api请求sdk框架，适合快速对接第三方接口sdk",
+  "keywords": [
+    "easy-api",
+    "sdk"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ryan",
+      "email": "1458790210@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "EasyApi\\": "src/EasyApi"
+    }
+  }
+}
