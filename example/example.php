@@ -10,7 +10,7 @@ class TestClient
     {
         $this->client = EasyApi\Http\Client::instance();
         $headers = [
-             'Cache-Control' => 'no-cache'
+            'Cache-Control' => 'no-cache'
         ];
         $this->client->setHeaders($headers);
         return $this->client->request($request, $options);
@@ -18,8 +18,14 @@ class TestClient
 
     public function testWechat()
     {
+        $init = [
+            'apiKey'    => '',
+            'apiSecret' => ''
+        ];
+        $forms = ['args' => ''];
+        EasyApi\Http\Config::$config = $init;
         $r = new EasyApi\Request\WechatTest();
-        $v = $this->client($r, []);
+        $v = $this->client($r, $forms);
         return $v;
     }
 }

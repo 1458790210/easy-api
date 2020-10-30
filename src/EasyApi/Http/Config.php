@@ -9,6 +9,10 @@ class Config
 
     public static function getConfig()
     {
+        if (is_array(self::$config)) {
+            return self::$config;
+        }
+
         if (is_file('.env')) {
             $env = parse_ini_file('.env', true);
 
