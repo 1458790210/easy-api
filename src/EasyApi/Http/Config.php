@@ -9,7 +9,7 @@ class Config
 
     public static function getConfig()
     {
-        if (is_array(self::$config)) {
+        if (!empty(self::$config)) {
             return self::$config;
         }
 
