@@ -18,14 +18,15 @@ class TestClient
 
     public function testWechat()
     {
-        $init                        = [
+        //或者从写到env文件中
+        EasyApi\Http\Config::$config = [
             'apiKey'    => '',
             'apiSecret' => '',
         ];
-        $forms                       = ['args' => ''];
-        EasyApi\Http\Config::$config = $init;
-        $r                           = new EasyApi\Request\WechatTest();
-        $v                           = $this->client($r, $forms);
+
+        $forms = ['args' => ''];
+        $r     = new EasyApi\Request\WechatTest();
+        $v     = $this->client($r, $forms);
         return $v;
     }
 }

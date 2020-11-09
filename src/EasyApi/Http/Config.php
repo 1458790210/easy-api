@@ -30,7 +30,7 @@ class Config
             }
         }
 
-        self::$config = ['apiKey' => getenv('ACCESS_KEY'), 'apiSecret' => getenv('SECRET_KEY')];
+        self::$config = ['apiKey' => getenv('apiKey'), 'apiSecret' => getenv('apiSecret')];
 
         return self::$config;
     }
