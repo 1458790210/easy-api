@@ -2,7 +2,7 @@
 
 namespace EasyApi\Http;
 
-class ContentType
+class ContentTypes
 {
 
     const JSON = 'application/json';

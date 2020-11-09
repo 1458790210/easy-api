@@ -17,7 +17,7 @@ class MimeTypes
         return null;
     }
 
-    private static $mime_types = array(
+    private static $mime_types = [
         'xlsx'    => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'xltx'    => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
         'potx'    => 'application/vnd.openxmlformats-officedocument.presentationml.template',
@@ -245,5 +245,5 @@ class MimeTypes
         'xsl'     => 'application/xml',
         'xslt'    => 'application/xslt+xml',
         'xul'     => 'application/vnd.mozilla.xul+xml',
-    );
+    ];
 }

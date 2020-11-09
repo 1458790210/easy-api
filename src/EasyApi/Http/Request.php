@@ -44,14 +44,14 @@ class Request
      */
     public $useragent = 'api/request';
 
-    public function __construct($method, $url, $data, $params = array(), $headers = array())
+    public function __construct($method, $url, $data, $params = [], $headers = [])
     {
-        $this->url = $url;
-        $this->params = $params;
-        $this->method = strtoupper($method);
+        $this->url     = $url;
+        $this->params  = $params;
+        $this->method  = strtoupper($method);
         $this->headers = $headers;
-        $this->data = $data;
-        $this->ctype = $headers['Content-Type'];
+        $this->data    = $data;
+        $this->ctype   = $headers['Content-Type'];
     }
 
     public function addHeader($key, $value)
@@ -99,9 +99,15 @@ class Request
 
     private function buildUrl()
     {
-        if (!empty($this->params)) {
-            $str = http_build_query($this->params);
-            $url = $this->url;
+        $params = [];
+        foreach ($this->params as $param) {
+            if ($param[0]) {
+                $params[$param[0]] = $param[1];
+            }
+        }
+        if (!empty($params)) {
+            $str       = http_build_query($params);
+            $url       = $this->url;
             $this->url = $url . (strpos($url, '?') === false ? '?' : '&') . $str;
         }
     }
@@ -111,18 +117,18 @@ class Request
         $body = '';
         if (is_array($this->data)) {
             switch ($this->ctype) {
-                case ContentType::JSON:
+                case ContentTypes::JSON:
                     $body = json_encode($this->data);
                     break;
-                case ContentType::FORM:
+                case ContentTypes::FORM:
                     $body = http_build_query($this->data);
                     break;
                 default:
-                    $body = (string) $this->data;
+                    $body = (string)$this->data;
                     break;
             }
         } else {
-            $body = (string) $this->data;
+            $body = (string)$this->data;
         }
 
         $this->body = $body;
@@ -130,9 +136,9 @@ class Request
 
     private function buildHeader()
     {
-        $headers = array();
+        $headers = [];
         foreach ($this->headers as $key => $value) {
-            $key = ucwords($key);
+            $key           = ucwords($key);
             $headers[$key] = $value;
         }
         $headers['User-Agent'] = $this->useragent;

@@ -38,9 +38,9 @@ class Client
 
     public function __construct($connectTimeout = 10000, $socketTimeout = 120000)
     {
-        $apiKey = trim(Config::getConfig()['apiKey']);
+        $apiKey    = trim(Config::getConfig()['apiKey']);
         $apiSecret = trim(Config::getConfig()['apiSecret']);
-        $host = trim(trim(Config::$host), "/");
+        $host      = trim(trim(Config::$host), "/");
 
         if (empty($apiKey)) {
             throw new RequestException("apiKey is empty");
@@ -52,11 +52,11 @@ class Client
             throw new RequestException("host is empty");
         }
 
-        $this->host = $host;
-        $this->apiKey = $apiKey;
-        $this->apiSecret = $apiSecret;
+        $this->host           = $host;
+        $this->apiKey         = $apiKey;
+        $this->apiSecret      = $apiSecret;
         $this->connectTimeout = $connectTimeout;
-        $this->socketTimeout = $socketTimeout;
+        $this->socketTimeout  = $socketTimeout;
     }
 
     public function getAdapter()
@@ -79,10 +79,10 @@ class Client
 
     public function getPublicForms()
     {
-        return array(
+        return [
             'appid'  => $this->apiKey,
-            'secret' => $this->apiSecret
-        );
+            'secret' => $this->apiSecret,
+        ];
     }
 
     public function request($request, $options)
@@ -105,15 +105,15 @@ class Client
             }
         }
 
-        $headers = array('Content-Type' => $forms->getContentType());
+        $headers = ['Content-Type' => $forms->getContentType()];
 
         $adapter = $this->getAdapter();
         //接口名
         $apiMethodName = $request->getService();
 
-        $url = $this->generateUrl($apiMethodName);
-
-        return $adapter->post($url, $forms, null, $headers);
+        $url   = $this->generateUrl($apiMethodName);
+        $quest = $request->getType();
+        return $adapter->$quest($url, $forms, $forms->forms, $headers);
     }
 
     public function generateUrl($path)
