@@ -111,6 +111,9 @@ class Client
 
         $url   = $this->generateUrl($apiMethodName);
         $quest = $request->getType();
+
+        $this->headers = array_merge($this->headers, $request->getHeaders());
+
         return $adapter->$quest($url, $forms, $forms->forms, $this->headers);
     }
 

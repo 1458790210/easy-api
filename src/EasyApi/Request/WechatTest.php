@@ -33,4 +33,8 @@ class WechatTest
         return $this->apiParas;
     }
 
+    public function getHeaders()
+    {
+        return ['Content-Type' => 'application/json'];
+    }
 }
