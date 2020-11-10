@@ -105,15 +105,13 @@ class Client
             }
         }
 
-        $headers = ['Content-Type' => $forms->getContentType()];
-
         $adapter = $this->getAdapter();
         //接口名
         $apiMethodName = $request->getService();
 
         $url   = $this->generateUrl($apiMethodName);
         $quest = $request->getType();
-        return $adapter->$quest($url, $forms, $forms->forms, $headers);
+        return $adapter->$quest($url, $forms, $forms->forms, $this->headers);
     }
 
     public function generateUrl($path)

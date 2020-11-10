@@ -114,14 +114,19 @@ class Request
 
     private function buildBody()
     {
-        $body = '';
-        if (is_array($this->data)) {
+        $data = [];
+        foreach ($this->data->forms as $v) {
+            if ($v[0]) {
+                $data[$v[0]] = $v[1];
+            }
+        }
+        if (is_array($data)) {
             switch ($this->ctype) {
                 case ContentTypes::JSON:
-                    $body = json_encode($this->data);
+                    $body = json_encode($data);
                     break;
                 case ContentTypes::FORM:
-                    $body = http_build_query($this->data);
+                    $body = http_build_query($data);
                     break;
                 default:
                     $body = (string)$this->data;
@@ -130,7 +135,6 @@ class Request
         } else {
             $body = (string)$this->data;
         }
-
         $this->body = $body;
     }
 

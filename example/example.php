@@ -6,12 +6,9 @@ class TestClient
 {
     private $client;
 
-    public function client($request, $options)
+    public function client($request, $options, $headers = [])
     {
         $this->client = EasyApi\Http\Client::instance();
-        $headers      = [
-            'Cache-Control' => 'no-cache',
-        ];
         $this->client->setHeaders($headers);
         return $this->client->request($request, $options);
     }
@@ -24,9 +21,12 @@ class TestClient
             'apiSecret' => '',
         ];
 
-        $forms = ['args' => ''];
-        $r     = new EasyApi\Request\WechatTest();
-        $v     = $this->client($r, $forms);
+        $forms   = ['args' => ''];
+        $headers = [
+            'Cache-Control' => 'no-cache',
+        ];
+        $r       = new EasyApi\Request\WechatTest();
+        $v       = $this->client($r, $forms, $headers);
         return $v;
     }
 }
