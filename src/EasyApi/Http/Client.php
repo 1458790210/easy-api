@@ -88,7 +88,7 @@ class Client
     public function request($request, $options)
     {
         $forms = new MultiPartForm();
-        // add public key field, for example api_key, api_secret
+
         $publics = $this->getPublicForms();
         $forms->addForms($publics);
 
@@ -106,13 +106,12 @@ class Client
         }
 
         $adapter = $this->getAdapter();
-        //接口名
+
         $apiMethodName = $request->getService();
 
         $url   = $this->generateUrl($apiMethodName);
-        $quest = $request->getType();
 
-        $this->headers = array_merge($this->headers, $request->getHeaders());
+        $quest = $request->getType();
 
         return $adapter->$quest($url, $forms, $forms->forms, $this->headers);
     }
@@ -140,7 +139,7 @@ class Client
 
     public function setHeaders($headers)
     {
-        $this->headers = $headers;
+        $this->headers = array_merge($this->headers, $headers);
     }
 
     public function setSslVerification($ssl)
