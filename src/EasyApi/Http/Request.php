@@ -51,7 +51,7 @@ class Request
         $this->method  = strtoupper($method);
         $this->headers = $headers;
         $this->data    = $data;
-        $this->ctype   = $headers['Content-Type']??null;
+        $this->ctype   = $headers['Content-Type'] ?? null;
     }
 
     public function addHeader($key, $value)
@@ -99,15 +99,9 @@ class Request
 
     private function buildUrl()
     {
-        if ($this->params){
-            $params = [];
-            foreach ($this->params as $param) {
-                if ($param[0]) {
-                    $params[$param[0]] = $param[1];
-                }
-            }
-            if (!empty($params)) {
-                $str       = http_build_query($params);
+        if ($this->params) {
+            if (!empty($this->params->forms)) {
+                $str       = http_build_query($this->params->forms);
                 $url       = $this->url;
                 $this->url = $url . (strpos($url, '?') === false ? '?' : '&') . $str;
             }
@@ -116,27 +110,21 @@ class Request
 
     private function buildBody()
     {
-        if ($this->data){
-            $data = [];
-            foreach ($this->data->forms as $v) {
-                if ($v[0]) {
-                    $data[$v[0]] = $v[1];
-                }
-            }
-            if (is_array($data)) {
+        if ($this->data) {
+            if (!empty($this->data->forms)) {
                 switch ($this->ctype) {
                     case ContentTypes::JSON:
-                        $body = json_encode($data);
+                        $body = json_encode($this->data->forms);
                         break;
                     case ContentTypes::FORM:
-                        $body = http_build_query($data);
+                        $body = http_build_query($this->data->forms);
                         break;
                     default:
-                        $body = (string)$this->data;
+                        $body = (string)$this->data->forms;
                         break;
                 }
             } else {
-                $body = (string)$this->data;
+                $body = (string)$this->data->forms;
             }
             $this->body = $body;
         }

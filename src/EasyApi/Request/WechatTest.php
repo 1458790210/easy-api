@@ -35,6 +35,6 @@ class WechatTest
 
     public function getHeaders()
     {
-        return ['Content-Type' => 'application/json'];
+        return ['Content-Type' => 'application/x-www-form-urlencoded'];
     }
 }

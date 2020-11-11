@@ -21,16 +21,9 @@ class MultiPartForm
         }
     }
 
-    public function addForm($name, $value)
+    public function addForm($options)
     {
-        array_push($this->forms, [$name, $value]);
-    }
-
-    public function addForms($forms)
-    {
-        foreach ($forms as $key => $value) {
-            array_push($this->forms, [$key, $value]);
-        }
+        $this->forms = array_merge($this->forms, $options);
     }
 
     public function addFile($field, $name, $content, $mimetype = null)

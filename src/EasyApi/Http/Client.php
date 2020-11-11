@@ -91,26 +91,26 @@ class Client
 
         $publics = $this->getPublicForms();
 
-        $forms->addForms($publics);
+        $forms->addForm($publics);
+
+        $forms->addForm($options);
+
+        foreach ($options as $key => $value) {
+            if (is_file($value)) {
+                $forms->addFile($key, $value, file_get_contents($value));
+            }
+        }
 
         //业务请求数据
         $bizContent = json_encode($request->getBizContent(), JSON_UNESCAPED_UNICODE);
         //签名
         $sign = $this->generateBizContentSign($bizContent);
 
-        foreach ($options as $key => $value) {
-            if (is_file($value)) {
-                $forms->addFile($key, $value, file_get_contents($value));
-            } else {
-                $forms->addForm($key, $value);
-            }
-        }
-
         $adapter = $this->getAdapter();
 
         $apiMethodName = $request->getService();
 
-        $url   = $this->generateUrl($apiMethodName);
+        $url = $this->generateUrl($apiMethodName);
 
         $this->setHeaders($request->getHeaders());
 

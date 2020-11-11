@@ -37,6 +37,8 @@ class Adapter
     /**
      * HttpClient
      * @param array $headers HTTP header
+     * @param int $connectTimeout
+     * @param int $socketTimeout
      */
     public function __construct($headers = [], $connectTimeout = 10000, $socketTimeout = 120000)
     {
@@ -159,18 +161,20 @@ class Adapter
         }
 
         curl_close($ch);
-        $response = $this->processResponse($content, $code);
-        return $response;
+        return $this->processResponse($content, $code);
     }
 
     /**
      * Process response before return
+     * @param $content
+     * @param $code
+     * @return Response
      */
     public function processResponse($content, $code)
     {
-        if (is_string($content)){
+        if (is_string($content)) {
             $body = $content;
-        }else{
+        } else {
             $body = json_decode($content, true);
         }
         return new Response(null, $body, $code);
@@ -187,7 +191,6 @@ class Adapter
 
     private function isSslVerification($url)
     {
-        $SSL = substr($url, 0, 8) == "https://" ? true : false;
-        return $SSL;
+        return substr($url, 0, 8) == "https://";
     }
 }
