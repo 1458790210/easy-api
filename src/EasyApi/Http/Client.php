@@ -90,6 +90,7 @@ class Client
         $forms = new MultiPartForm();
 
         $publics = $this->getPublicForms();
+
         $forms->addForms($publics);
 
         //业务请求数据
@@ -111,9 +112,11 @@ class Client
 
         $url   = $this->generateUrl($apiMethodName);
 
+        $this->setHeaders($request->getHeaders());
+
         $quest = $request->getType();
 
-        return $adapter->$quest($url, $forms, $forms->forms, $this->headers);
+        return $adapter->$quest($url, $forms, $this->headers);
     }
 
     public function generateUrl($path)

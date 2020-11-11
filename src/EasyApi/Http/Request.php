@@ -51,7 +51,7 @@ class Request
         $this->method  = strtoupper($method);
         $this->headers = $headers;
         $this->data    = $data;
-        $this->ctype   = $headers['Content-Type'];
+        $this->ctype   = $headers['Content-Type']??null;
     }
 
     public function addHeader($key, $value)
@@ -99,43 +99,47 @@ class Request
 
     private function buildUrl()
     {
-        $params = [];
-        foreach ($this->params as $param) {
-            if ($param[0]) {
-                $params[$param[0]] = $param[1];
+        if ($this->params){
+            $params = [];
+            foreach ($this->params as $param) {
+                if ($param[0]) {
+                    $params[$param[0]] = $param[1];
+                }
             }
-        }
-        if (!empty($params)) {
-            $str       = http_build_query($params);
-            $url       = $this->url;
-            $this->url = $url . (strpos($url, '?') === false ? '?' : '&') . $str;
+            if (!empty($params)) {
+                $str       = http_build_query($params);
+                $url       = $this->url;
+                $this->url = $url . (strpos($url, '?') === false ? '?' : '&') . $str;
+            }
         }
     }
 
     private function buildBody()
     {
-        $data = [];
-        foreach ($this->data->forms as $v) {
-            if ($v[0]) {
-                $data[$v[0]] = $v[1];
+        if ($this->data){
+            $data = [];
+            foreach ($this->data->forms as $v) {
+                if ($v[0]) {
+                    $data[$v[0]] = $v[1];
+                }
             }
-        }
-        if (is_array($data)) {
-            switch ($this->ctype) {
-                case ContentTypes::JSON:
-                    $body = json_encode($data);
-                    break;
-                case ContentTypes::FORM:
-                    $body = http_build_query($data);
-                    break;
-                default:
-                    $body = (string)$this->data;
-                    break;
+            if (is_array($data)) {
+                switch ($this->ctype) {
+                    case ContentTypes::JSON:
+                        $body = json_encode($data);
+                        break;
+                    case ContentTypes::FORM:
+                        $body = http_build_query($data);
+                        break;
+                    default:
+                        $body = (string)$this->data;
+                        break;
+                }
+            } else {
+                $body = (string)$this->data;
             }
-        } else {
-            $body = (string)$this->data;
+            $this->body = $body;
         }
-        $this->body = $body;
     }
 
     private function buildHeader()
